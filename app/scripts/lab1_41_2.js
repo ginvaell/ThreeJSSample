@@ -6,6 +6,12 @@ export default class extends Lab{
     super();
   }
 
+  prepare() {
+    super.prepare();
+    this.rotateAroundWorldAxis(this.cube, new THREE.Vector3(0,0,1), Math.PI/4);
+    this.rotateAroundWorldAxis(this.sphere, new THREE.Vector3(0,0,1), Math.PI/4);
+  }
+
   rotateAroundWorldAxis(object, axis, radians) {
     console.log('rotate');
     var rotWorldMatrix = new THREE.Matrix4();
@@ -24,8 +30,6 @@ export default class extends Lab{
   };
 
   render() {
-    this.rotateAroundWorldAxis(this.cube, new THREE.Vector3(0,0,1), Math.PI/4);
-    this.rotateAroundWorldAxis(this.sphere, new THREE.Vector3(0,0,1), Math.PI/4);
     super.render();
   };
 

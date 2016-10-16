@@ -9,8 +9,12 @@ export default class {
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( this.renderer.domElement );
 
+
+  }
+
+  prepare() {
     this.cubeGeometry = new THREE.BoxGeometry( 40, 40, 40 );
-    this.sphereGeometry = new THREE.SphereGeometry(40*0.866, 10, 10);
+    this.sphereGeometry = new THREE.SphereGeometry(40*0.866, 20, 20);
 
     this.redMaterial = new THREE.MeshBasicMaterial({
       wireframe: true,
@@ -19,14 +23,21 @@ export default class {
     this.whiteMaterial = new THREE.MeshBasicMaterial({
       wireframe: true
     });
+    this.normalMaterial = new THREE.MeshNormalMaterial();
+    this.normalWiredMaterial = new THREE.MeshNormalMaterial({
+      wireframe: true
+    });
 
     this.cube = new THREE.Mesh( this.cubeGeometry, this.redMaterial );
-    this.sphere = new THREE.Mesh( this.sphereGeometry, this.whiteMaterial);
+    // this.sphere = new THREE.Mesh( this.sphereGeometry, this.whiteMaterial);
+
+    this.prepareHelper();
 
     this.cube.position.x = 50;
     this.cube.position.y = 50;
     this.sphere.position.x = 50;
     this.sphere.position.y = 50;
+
     // this.cube.rotation.x += 0.3;
     // this.cube.rotation.y += 0.3;
 
@@ -34,11 +45,13 @@ export default class {
     this.scene.add( this.sphere );
 
     this.camera.position.z = 100;
-
-
-    this.render();
   }
 
+  prepareHelper() {}
+
+  init() {
+    this.prepare();
+  }
 
   render () {
     // requestAnimationFrame( render );

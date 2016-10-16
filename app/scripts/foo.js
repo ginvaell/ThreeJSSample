@@ -48,14 +48,14 @@ export default function(){
       vertices.push(geometry.vertices[i].clone());
       vertices[i].y *= 4;
     }
-    geometry.morphTargets.push( { name: "target", vertices: vertices } );
+    geometry.morphTargets.push( { name: 'target', vertices: vertices } );
 
     vertices = [];
     for ( var i = 0; i < geometry.vertices.length; i ++ ) {
       vertices.push(geometry.vertices[i].clone());
       vertices[i].x *= 4;
     }
-    geometry.morphTargets.push( { name: "target1", vertices: vertices } );
+    geometry.morphTargets.push( { name: 'target1', vertices: vertices } );
     // sphere.name='target3';
     geometry.morphTargets.push( sphere );
 

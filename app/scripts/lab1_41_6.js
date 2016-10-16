@@ -8,7 +8,9 @@ export default class {
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( this.renderer.domElement );
+  }
 
+  init() {
     this.cubeGeomertry = new THREE.BoxGeometry(40, 40, 40);
     this.sphereGeometry = new THREE.SphereGeometry(40, 10, 10);
     this.newSphereGeometry = new THREE.SphereGeometry(40, 10, 10);
@@ -26,7 +28,7 @@ export default class {
       this.newSphereGeometry.vertices[i] = this.cubeGeomertry.vertices[minJ];
     }
 
-    this.sphereGeometry.morphTargets.push( { name: "target", vertices: this.newSphereGeometry.vertices } );
+    this.sphereGeometry.morphTargets.push( { name: 'target', vertices: this.newSphereGeometry.vertices } );
 
     this.redMaterial = new THREE.MeshBasicMaterial({
       wireframe: true,
@@ -62,7 +64,6 @@ export default class {
     this.morph += 0.005;
     if (this.morph >= 1) this.morph = 1;
     this.sphere.morphTargetInfluences[0] = this.morph;
-    // this.camera.lookAt ( new THREE.Vector3(0, -50, 0) );
     this.renderer.render( this.scene, this.camera );
   };
 

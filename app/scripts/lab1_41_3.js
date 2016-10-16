@@ -4,6 +4,10 @@ export default class extends Lab{
 
   constructor() {
     super();
+  }
+
+  prepare() {
+    super.prepare();
     this.smallRadius = 30;
     this.bigRadius = 60;
     this.smallTetrahedronGeomertry = new THREE.TetrahedronGeometry(this.smallRadius, 0);
@@ -24,10 +28,10 @@ export default class extends Lab{
     this.bigTetrahedron.rotation.x = Math.PI/4 ;
     this.bigTetrahedron.rotation.y = - Math.PI/4;
     this.bigTetrahedron.position.x = -150;
-
   }
 
   render() {
+    console.dir(this);
     super.render();
   };
 

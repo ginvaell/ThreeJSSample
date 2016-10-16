@@ -4,8 +4,11 @@ export default class extends Lab{
 
   constructor() {
     super();
-    this.smallTetrahedron.position.y += 0.408*this.bigRadius*3;
+  }
 
+  prepare() {
+    super.prepare();
+    this.smallTetrahedron.position.y += 0.408*this.bigRadius*3;
   }
 
   render() {
