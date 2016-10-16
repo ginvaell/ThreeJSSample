@@ -28,8 +28,11 @@ export default class {
       wireframe: true
     });
 
+    this.t1Material = this.normalWiredMaterial;
+    this.t2Material = this.normalWiredMaterial;
+
     this.cube = new THREE.Mesh( this.cubeGeometry, this.redMaterial );
-    // this.sphere = new THREE.Mesh( this.sphereGeometry, this.whiteMaterial);
+    this.sphere = new THREE.Mesh( this.sphereGeometry, this.whiteMaterial);
 
     this.prepareHelper();
 

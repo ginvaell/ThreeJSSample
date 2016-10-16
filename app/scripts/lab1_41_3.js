@@ -13,8 +13,8 @@ export default class extends Lab{
     this.smallTetrahedronGeomertry = new THREE.TetrahedronGeometry(this.smallRadius, 0);
     this.bigTetrahedronGeomertry = new THREE.TetrahedronGeometry(this.bigRadius, 0);
 
-    this.smallTetrahedron = new THREE.Mesh( this.smallTetrahedronGeomertry, this.normalWiredMaterial);
-    this.bigTetrahedron = new THREE.Mesh( this.bigTetrahedronGeomertry, this.normalWiredMaterial);
+    this.smallTetrahedron = new THREE.Mesh( this.smallTetrahedronGeomertry, this.t1Material);
+    this.bigTetrahedron = new THREE.Mesh( this.bigTetrahedronGeomertry, this.t2Material);
 
     this.scene.add( this.smallTetrahedron );
     this.smallTetrahedron.rotation.x = Math.PI/4 ;

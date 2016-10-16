@@ -39,6 +39,12 @@ export default class extends Lab {
     this.material = new THREE.MeshBasicMaterial({
       map: this.texture
     });
+    this.t1Material = this.material;
+    this.t2Material = new THREE.MeshBasicMaterial({
+      map: this.texture,
+      transparent: true,
+      opacity: 0.5
+    });
     console.dir(this.texture);
     this.sphere = new THREE.Mesh(this.sphereGeometry, this.material);
 
