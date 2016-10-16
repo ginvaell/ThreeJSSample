@@ -13,39 +13,6 @@ export default class {
     this.loader = new THREE.TextureLoader();
     this.clock = new THREE.Clock();
 
-    this.keys = {
-      a: {
-        pressed: false,
-        value: -1,
-        impact: 'x'
-      },
-      d: {
-        pressed: false,
-        value: 1,
-        impact: 'x'
-      },
-      w: {
-        pressed: false,
-        value: 1,
-        impact: 'y'
-      },
-      s: {
-        pressed: false,
-        value: -1,
-        impact: 'y'
-      },
-      z: {
-        pressed: false,
-        value: 1,
-        impact: 'z'
-      },
-      x: {
-        pressed: false,
-        value: -1,
-        impact: 'z'
-      }
-    };
-
     this.loadTexture('/images/map.jpg', texture => this.addCube(texture));
     this.loadTexture('/images/tet.jpg', texture => this.addTetrahedron(texture));
     this.loadTexture('/images/sp.jpg', texture => this.addSphere(texture));
@@ -58,21 +25,7 @@ export default class {
     this.scene.add(this.lights[1]);
 
     this.lightIndex = 0;
-
-    $(window).on('keydown', e => {
-      if (e.key in this.keys) {
-        this.keys[e.key].pressed = true;
-      }
-      else {
-        if(e.key === '1') this.lightIndex = 0;
-        if(e.key === '2') this.lightIndex = 1;
-      }
-    });
-    $(window).on('keyup', e => {
-      if (e.key in this.keys) {
-        this.keys[e.key].pressed = false;
-      }
-    });
+    this.addKeysEvents();
 
     this.camera.position.z = 100;
 
@@ -139,6 +92,56 @@ export default class {
     this.scene.add(this.sphere);
     this.itemCounter++;
     this.render();
+  }
+
+  addKeysEvents() {
+    this.keys = {
+      a: {
+        pressed: false,
+        value: -1,
+        impact: 'x'
+      },
+      d: {
+        pressed: false,
+        value: 1,
+        impact: 'x'
+      },
+      w: {
+        pressed: false,
+        value: 1,
+        impact: 'y'
+      },
+      s: {
+        pressed: false,
+        value: -1,
+        impact: 'y'
+      },
+      z: {
+        pressed: false,
+        value: 1,
+        impact: 'z'
+      },
+      x: {
+        pressed: false,
+        value: -1,
+        impact: 'z'
+      }
+    };
+
+    $(window).on('keydown', e => {
+      if (e.key in this.keys) {
+        this.keys[e.key].pressed = true;
+      }
+      else {
+        if(e.key === '1') this.lightIndex = 0;
+        if(e.key === '2') this.lightIndex = 1;
+      }
+    });
+    $(window).on('keyup', e => {
+      if (e.key in this.keys) {
+        this.keys[e.key].pressed = false;
+      }
+    });
   }
 
   render () {
