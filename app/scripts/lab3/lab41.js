@@ -3,7 +3,7 @@ export default class {
     this.scene = new THREE.Scene();
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.zoom = 5;
+    this.zoom = 2;
     this.camera = new THREE.OrthographicCamera( this.width / - this.zoom, this.width / this.zoom, this.height / this.zoom, this.height / - this.zoom, 1, 1000 );
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize( window.innerWidth, window.innerHeight );
@@ -12,6 +12,10 @@ export default class {
     this.itemAmount = 3;
     this.loader = new THREE.TextureLoader();
     this.clock = new THREE.Clock();
+
+    var end = new THREE.Mesh(new THREE.PlaneGeometry( 400, 200 ), new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} ));
+    end.position.z = -20;
+    this.scene.add(end);
 
     this.loadTexture('/images/map.jpg', texture => this.addCube(texture));
     this.loadTexture('/images/tet.jpg', texture => this.addTetrahedron(texture));
@@ -28,6 +32,7 @@ export default class {
     this.addKeysEvents();
 
     this.camera.position.z = 100;
+    this.camera.rotation.x -0.3;
 
     var light = new THREE.AmbientLight( 0xffffff ); // soft white light
     this.scene.add( light );

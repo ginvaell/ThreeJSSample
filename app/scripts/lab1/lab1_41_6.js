@@ -61,7 +61,7 @@ export default class {
 
   render () {
     requestAnimationFrame( () => this.render() );
-    this.morph += 0.005;
+    this.morph += 0.01;
     if (this.morph >= 1) this.morph = 1;
     this.sphere.morphTargetInfluences[0] = this.morph;
     this.renderer.render( this.scene, this.camera );
