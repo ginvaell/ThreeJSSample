@@ -49,6 +49,10 @@ export default class {
     this.cameraHelper = new THREE.CameraHelper( this.lights[0].shadow.camera );
     // this.scene.add(this.cameraHelper);
 
+    var floor = new THREE.Mesh(new THREE.PlaneGeometry( 400, 400 ), new THREE.MeshLambertMaterial( {color: 0xc0c0a0, side: THREE.DoubleSide} ));
+    floor.rotation.x = Math.PI / 2;
+    this.scene.add(floor);
+
   }
 
   loadTexture(url, onSuccess) {
@@ -90,7 +94,7 @@ export default class {
     this.smallA = a / 5;
     this.angle = 0;
     this.torus = new THREE.Mesh(
-      new THREE.TorusGeometry( a, this.smallA, 30, 30 ),
+      new THREE.CylinderGeometry( 0, a/2, a, 30 ),
       new THREE.MeshPhongMaterial({
         map: texture,
         bumpMap: this.bumpMap,
@@ -98,10 +102,16 @@ export default class {
         shininess: 10
       })
     );
+    // this.torus.geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -a/2, 0) );
     this.scene.add(this.torus);
-    this.torus.rotation.x = Math.PI / 2;
-    this.torus.rotation.y = 0;
-    this.torus.position.x = a;
+    // this.torus.rotation.x = Math.PI / 2;
+    this.xAngle = Math.atan(1/2) + Math.PI / 2;
+    this.torus.rotation.x = this.xAngle;
+    this.torus.setRotationFromEuler(this.torus.rotation);
+    console.log(this.xAngle);
+    this.torus.position.y = a * Math.sin(this.xAngle) / 4;
+    this.torus.position.z = a/2;
+    this.torus.position.x = a/2;
     this.itemCounter++;
     this.render();
   }
@@ -132,15 +142,42 @@ export default class {
     this.update();
   };
 
+  rotateAroundObjectAxis( object, axis, radians ) {
+    let rotationMatrix = new THREE.Matrix4();
+    rotationMatrix.makeRotationAxis( axis.normalize(), radians );
+    object.matrix.multiply( rotationMatrix );                       // post-multiply
+    object.rotation.setFromRotationMatrix(object.matrix, object.order);
+  }
+
   update() {
     var moveDistance = this.clock.getDelta();
-    let r = this.a - this.smallA;
+    let r = this.a / 2;
     let velocity = 1;
     this.angle += velocity * moveDistance;
     console.log(this.angle);
-    this.torus.position.x = r * Math.cos(this.angle);
-    this.torus.position.z = r * Math.sin(this.angle);
-    this.torus.rotation.z = this.angle;
+    this.torus.position.x = r * Math.cos(this.angle)*2;
+    this.torus.position.z = r * Math.sin(this.angle)*2;
+    this.torus.position.y = r * Math.sin(this.xAngle) / 2;
+    // let rotation_matrix = new THREE.Matrix4().makeRotationZ(moveDistance); // Animated rotation will be in .01 radians along object's X axis
+    // Update the object's rotation & apply it
+    // rotation_matrix.multiply(this.torus.matrix);
+    // this.torus.rotation.setFromRotationMatrix(rotation_matrix);
+    // this.torus.rotation.y = 0 ;
+    let vector = new THREE.Vector3(this.torus.position.x, this.torus.position.y, this.torus.position.z).normalize();
+    let localVector = this.torus.worldToLocal(vector);
+    console.log(this.angle % 2 * Math.PI);
+    // if (this.angle % 2 * Math.PI < Math.PI ) {
+    //   this.torus.rotateOnAxis(new THREE.Vector3(0,1,0), velocity * moveDistance);
+    //   this.torus.rotation.x = this.xAngle;
+      this.torus.rotateY(moveDistance);
+      this.torus.rotateZ(moveDistance);
+    // }
+    // else {
+    //   this.torus.rotateOnAxis(new THREE.Vector3(0,-1,0), velocity * moveDistance);
+      // this.torus.rotation.x =  - this.xAngle;
+    // }
+    // this.torus.rotation.z = this.angle;
+    // this.rotateAroundObjectAxis(this.torus, new THREE.Vector3(0, 0, 1), moveDistance);
 
   }
 
