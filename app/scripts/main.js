@@ -1,2 +1,2 @@
-import lab from './lab4';
+import lab from './lab5';
 lab();
