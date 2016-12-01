@@ -9,8 +9,8 @@ export default class {
     // this.camera = new THREE.OrthographicCamera( this.width / - this.zoom, this.width / this.zoom, this.height / this.zoom, this.height / - this.zoom, 1, 1000 );
     this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 5000);
     this.renderer = new THREE.WebGLRenderer({antialias: true});
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( this.renderer.domElement );
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(this.renderer.domElement);
 
     this.itemCounter = 0;
     this.itemAmount = 2;
@@ -22,26 +22,24 @@ export default class {
     this.loadTexture('/images/sp.jpg', texture => this.addCylinder(texture));
 
 
+    this.lights = [new THREE.DirectionalLight(0xff0000, 3), new THREE.PointLight(0x00ff00, 5)];
 
-
-    this.lights = [new THREE.DirectionalLight( 0xff0000, 3 ), new THREE.PointLight( 0x00ff00, 5 )];
-
-    this.lights[0].position.set( 100, 100, 100 );
+    this.lights[0].position.set(100, 100, 100);
 
     this.scene.add(this.lights[0]);
 
     this.lightIndex = 0;
 
     this.camera.position.z = 500;
-    this.camera.rotation.x -0.3;
-    this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+    this.camera.rotation.x - 0.3;
+    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
-    var ambientLight = new THREE.AmbientLight( 0xffffff ); // soft white light
-    this.scene.add( ambientLight );
+    var ambientLight = new THREE.AmbientLight(0xffffff); // soft white light
+    this.scene.add(ambientLight);
     this.helper = new THREE.DirectionalLightHelper(this.lights[0], 1);
     this.scene.add(this.helper);
 
-    this.cameraHelper = new THREE.CameraHelper( this.lights[0].shadow.camera );
+    this.cameraHelper = new THREE.CameraHelper(this.lights[0].shadow.camera);
 
   }
 
@@ -60,12 +58,12 @@ export default class {
   }
 
   addCylinder(texture) {
-    var a = 40;
+    var a = 100;
     this.a = a;
     this.smallA = a / 5;
     this.angle = 0;
     this.attractor = new THREE.Mesh(
-      new THREE.CylinderGeometry( a/2, a/2, a, 30 ),
+      new THREE.CylinderGeometry(a / 2, a / 2, a, 30),
       new THREE.MeshPhongMaterial({
         map: texture,
         shading: THREE.SmoothShading,
@@ -84,39 +82,46 @@ export default class {
   }
 
   addParticleSystem(texture) {
-    this.count = 150;
+    this.count = 300;
     let a = 5;
-    let geometry = new THREE.SphereGeometry( a, 20, 20 );
+    let geometry = new THREE.SphereGeometry(a, 20, 20);
     let material = new THREE.MeshPhongMaterial({
-      map: texture,
+      // map: texture,
       color: 0xffffff
     });
 
     this.particles = [];
 
     for (let i = 0; i < this.count; i++) {
-      this.particles.push(new Particle(geometry, material, this.scene, this.attractor));
+      this.particles.push(new Particle(
+        geometry,
+        new THREE.MeshPhongMaterial({
+          // map: texture,
+          color: 0xffffff
+        }),
+        this.scene,
+        this.attractor));
     }
 
     this.itemCounter++;
     this.render();
   }
 
-  render () {
+  render() {
     if (this.itemCounter !== this.itemAmount) {
       return;
     }
-    requestAnimationFrame( () => this.render() );
+    requestAnimationFrame(() => this.render());
     this.controls.update();
     this.helper.update();
-    this.renderer.render( this.scene, this.camera );
+    this.renderer.render(this.scene, this.camera);
     this.update();
   };
 
-  rotateAroundObjectAxis( object, axis, radians ) {
+  rotateAroundObjectAxis(object, axis, radians) {
     let rotationMatrix = new THREE.Matrix4();
-    rotationMatrix.makeRotationAxis( axis.normalize(), radians );
-    object.matrix.multiply( rotationMatrix );                       // post-multiply
+    rotationMatrix.makeRotationAxis(axis.normalize(), radians);
+    object.matrix.multiply(rotationMatrix);                       // post-multiply
     object.rotation.setFromRotationMatrix(object.matrix, object.order);
   }
 
@@ -124,8 +129,8 @@ export default class {
 
     var q = new THREE.Quaternion(); // create once and reuse
 
-    q.setFromAxisAngle( axis, radians ); // axis must be normalized, angle in radians
-    object.quaternion.premultiply( q );
+    q.setFromAxisAngle(axis, radians); // axis must be normalized, angle in radians
+    object.quaternion.premultiply(q);
 
   };
 
