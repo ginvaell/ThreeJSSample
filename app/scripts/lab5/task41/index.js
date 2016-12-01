@@ -73,6 +73,20 @@ export default class {
 
     this.scene.add(this.attractor);
 
+    this.emitterR = a / 2;
+    this.emitterH = a;
+
+    this.emitter = new THREE.Mesh(
+      new THREE.CylinderGeometry(this.emitterR, this.emitterR, this.emitterH, 30),
+      new THREE.MeshPhongMaterial({
+        map: texture,
+        shading: THREE.SmoothShading,
+        shininess: 10
+      })
+    );
+
+    this.scene.add(this.emitter);
+
     this.attractor.position.y = 200;
     this.attractor.position.z = -400;
     this.attractor.position.x = -400;
@@ -96,11 +110,11 @@ export default class {
       this.particles.push(new Particle(
         geometry,
         new THREE.MeshPhongMaterial({
-          map: texture,
+          // map: texture,
           color: 0xffffff
         }),
         this.scene,
-        this.attractor));
+        this.attractor, this.emitterR, this.emitterH));
     }
 
     this.itemCounter++;

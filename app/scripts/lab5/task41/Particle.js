@@ -3,10 +3,12 @@ let stretch = (random, min, max) => {
 };
 
 export default class Particle {
-  constructor(geometry, material, scene, attractor) {
+  constructor(geometry, material, scene, attractor, emitterR, emitterH) {
     this.geometry = geometry;
     this.material = material;
     this.attractor = attractor;
+    this.emitterR = emitterR;
+    this.emitterH = emitterH;
 
     this.mesh = new THREE.Mesh(geometry, material);
     this.scene = scene;
@@ -34,16 +36,21 @@ export default class Particle {
 
   init() {
     let maxV = 100;
-    this.v = new THREE.Vector3(stretch(Math.random(), -maxV, maxV), stretch(Math.random(), -maxV, maxV), stretch(Math.random(), -maxV, maxV));
+    let minV = 30;
+    let angle = stretch(Math.random(), 0, Math.PI * 2);
+    let h = stretch(Math.random(), -this.emitterH /2, this.emitterH /2);
+    this.mesh.position.y = h;
+    this.mesh.position.x = this.emitterR * Math.cos(angle);
+    this.mesh.position.z = this.emitterR * Math.sin(angle);
+
+    this.v = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle)).normalize().multiplyScalar(stretch(Math.random(), minV, maxV));
+
     this.a = new THREE.Vector3(this.attractor.position.x, this.attractor.position.y, this.attractor.position.z).normalize();
     this.aForce = 100;
     this.random = Math.random();
     this.lifetime = stretch(this.random, 100, 500);
-    this.material.color.setHSL(stretch(this.random, 0, 0.35), 1, 0.5);
+    this.material.color.setHSL(0.13, 1, 0.5);
     this.age = 0;
-    this.mesh.position.x = 0;
-    this.mesh.position.y = 0;
-    this.mesh.position.z = 0;
   }
 
   updateTrack() {
@@ -59,11 +66,27 @@ export default class Particle {
     }
   }
 
+  updateColor() {
+    let distance = this.mesh.position.distanceTo(new THREE.Vector3(0,0,0));
+    let brightness = 1 - distance / 500;
+    if (brightness < 0) brightness = 0;
+    brightness = stretch(brightness, 0.1, 1);
+    this.mesh.material.color.setHSL(0.13, 0.5, brightness);
+
+  }
+
   move(clock) {
     this.age++;
 
-    if (this.age > this.lifetime) {
+    if (this.age > this.lifetime + this.trackLifeTime + 2) {
       this.init();
+      return;
+    }
+
+    if (this.age > this.lifetime) {
+      if (this.track.length) {
+        this.scene.remove(this.track.shift());
+      }
       return;
     }
 
@@ -96,7 +119,7 @@ export default class Particle {
     if (distance < 10) {
       this.mesh.position.copy(this.point);
       return;
-    };
+    }
 
     this.aForce = 4000000 / (distance * distance);
 
@@ -124,6 +147,7 @@ export default class Particle {
     }
 
     this.updateTrack();
+    this.updateColor();
 
     this.line.geometry.vertices[0] = new THREE.Vector3(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
     let helpLineLength = this.aForce;
