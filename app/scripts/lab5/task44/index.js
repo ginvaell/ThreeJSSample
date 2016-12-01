@@ -22,7 +22,7 @@ export default class {
     this.loadTexture('/images/sp.jpg', texture => this.addCylinder(texture));
 
 
-    this.lights = [new THREE.DirectionalLight(0xff0000, 3), new THREE.PointLight(0x00ff00, 5)];
+    this.lights = [new THREE.DirectionalLight(0xffffff, 3), new THREE.PointLight(0x00ff00, 5)];
 
     this.lights[0].position.set(100, 100, 100);
 
@@ -96,7 +96,7 @@ export default class {
       this.particles.push(new Particle(
         geometry,
         new THREE.MeshPhongMaterial({
-          // map: texture,
+          map: texture,
           color: 0xffffff
         }),
         this.scene,
