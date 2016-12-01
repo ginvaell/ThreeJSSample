@@ -83,7 +83,7 @@ export default class {
 
   addParticleSystem(texture) {
     this.count = 300;
-    let a = 5;
+    let a = 2;
     let geometry = new THREE.SphereGeometry(a, 20, 20);
     let material = new THREE.MeshPhongMaterial({
       // map: texture,

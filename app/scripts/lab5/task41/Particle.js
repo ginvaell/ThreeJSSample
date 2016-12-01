@@ -12,6 +12,8 @@ export default class Particle {
     this.scene = scene;
     scene.add(this.mesh);
     this.velocity = 50;
+    this.track = [];
+    this.trackLifeTime = stretch(Math.random(), 6, 12);
 
 
     this.raycaster = new THREE.Raycaster();
@@ -42,6 +44,19 @@ export default class Particle {
     this.mesh.position.x = 0;
     this.mesh.position.y = 0;
     this.mesh.position.z = 0;
+  }
+
+  updateTrack() {
+    let clone = this.mesh.clone();
+    this.track.push(clone);
+    this.scene.add(clone);
+    if (this.track.length > this.trackLifeTime)
+      this.scene.remove(this.track.shift());
+    for (let i = 1; i <= this.track.length; i++) {
+      let scale = stretch(i / this.track.length, 0.6, 1);
+      let point = this.track[i-1];
+      point.scale.set(scale, scale, scale);
+    }
   }
 
   move(clock) {
@@ -107,6 +122,8 @@ export default class Particle {
       //   Math.sign(point.z - this.attractor.position.z) * 3
       // ));
     }
+
+    this.updateTrack();
 
     this.line.geometry.vertices[0] = new THREE.Vector3(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
     let helpLineLength = this.aForce;
