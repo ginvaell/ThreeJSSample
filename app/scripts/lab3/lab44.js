@@ -62,11 +62,11 @@ export default class {
     this.scene.add(floor);
     this.scene.add(roof);
 
-    this.loadTexture('/images/tree.jpg', bMap => {
+    this.loadTexture('/images/some.jpg', bMap => {
       this.bumpMap = bMap;
-      this.loadTexture('/images/tet.jpg', texture => this.addCube(texture));
-      this.loadTexture('/images/tree.jpg', texture => this.addTetrahedron(texture));
-      this.loadTexture('/images/sp.jpg', texture => this.addSphere(texture));
+      this.loadTexture('/images/some.jpg', texture => this.addCube(texture));
+      this.loadTexture('/images/glass.jpg', texture => this.addTetrahedron(texture));
+      this.loadTexture('/images/dots.jpg', texture => this.addSphere(texture));
     });
 
 
@@ -113,7 +113,7 @@ export default class {
       onSuccess,
 
       (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded ('+url+')');
       },
 
       (xhr) => {
@@ -124,15 +124,14 @@ export default class {
   addCube(texture) {
     var a = 40;
     this.cube = new THREE.Mesh(
-      new THREE.BoxGeometry( a, a, a ),
+      new THREE.DodecahedronGeometry(a, 0 ),
       new THREE.MeshLambertMaterial({
-        map: texture
+        map: texture,
+        bumpMap: this.bumpMap
       })
     );
     this.scene.add(this.cube);
-    this.cube.rotation.x = 0.3;
-    this.cube.rotation.y = 0.3;
-    this.cube.position.x = -100;
+    this.cube.position.x = 100;
     this.cube.position.z = -80;
     this.cube.castShadow = true;
     this.cube.receiveShadow = true;
@@ -143,17 +142,14 @@ export default class {
   addTetrahedron(texture) {
     var a = 40;
     this.tetrahedron = new THREE.Mesh(
-      new THREE.CylinderGeometry( 0, a/2, a, 80 ),
+      new THREE.CylinderGeometry( a/2, a/2, a, 80 ),
       new THREE.MeshPhongMaterial({
         map: texture,
-        bumpMap: this.bumpMap,
-        shading: THREE.SmoothShading,
-        shininess: 10
+        transparent: true,
+        opacity: 0.6
       })
     );
     this.scene.add(this.tetrahedron);
-    this.tetrahedron.rotation.x = 0.3;
-    this.tetrahedron.rotation.y = Math.PI / 2;
     this.tetrahedron.position.z = -80;
     this.tetrahedron.castShadow = true;
     this.tetrahedron.receiveShadow = true;
@@ -167,8 +163,8 @@ export default class {
       new THREE.SphereGeometry( a * Math.sqrt(3) / 2 , 20, 20 ),
       new THREE.MeshPhongMaterial({
         map: texture,
-        transparent: true,
-        opacity: 0.2
+        shading: THREE.SmoothShading,
+        shininess: 10
       })
     );
     this.sphere.position.x = -100;
