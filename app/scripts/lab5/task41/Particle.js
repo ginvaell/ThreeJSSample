@@ -49,7 +49,7 @@ export default class Particle {
     this.aForce = 100;
     this.random = Math.random();
     this.lifetime = stretch(this.random, 100, 500);
-    this.material.color.setHSL(0.13, 1, 0.5);
+    this.material.color.setHSL(0.69, 1, 0.5);
     this.age = 0;
   }
 
@@ -71,7 +71,7 @@ export default class Particle {
     let brightness = 1 - distance / 500;
     if (brightness < 0) brightness = 0;
     brightness = stretch(brightness, 0.1, 1);
-    this.mesh.material.color.setHSL(0.13, 0.5, brightness);
+    this.mesh.material.color.setHSL(0.69, 0.5, brightness);
 
   }
 

@@ -1,4 +1,4 @@
-import Lab from './lab41';
+import Lab from './lab44';
 
 export default function() {
   var lab = new Lab();
