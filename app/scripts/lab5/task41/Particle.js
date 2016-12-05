@@ -68,10 +68,14 @@ export default class Particle {
 
   updateColor() {
     let distance = this.mesh.position.distanceTo(new THREE.Vector3(0,0,0));
-    let brightness = 1 - distance / 500;
+    let brightness = 1 - distance / 400;
     if (brightness < 0) brightness = 0;
-    brightness = stretch(brightness, 0.1, 1);
+    brightness = stretch(brightness, 0.05, 1);
     this.mesh.material.color.setHSL(0.69, 0.5, brightness);
+    let scale = 1 - distance / 200;
+    if (scale < 0) scale = 0;
+    scale = stretch(scale, 0.05, 1);
+    this.mesh.scale.set(scale, scale, scale);
 
   }
 
@@ -138,12 +142,6 @@ export default class Particle {
     if (intersections && intersections.length) {
       let point = intersections[0].point;
       this.mesh.position.copy(point);
-
-      //   .add(new THREE.Vector3(
-      //   Math.sign(point.x - this.attractor.position.x) * 3,
-      //   Math.sign(point.y - this.attractor.position.y) * 3,
-      //   Math.sign(point.z - this.attractor.position.z) * 3
-      // ));
     }
 
     this.updateTrack();

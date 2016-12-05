@@ -93,7 +93,6 @@ export default class {
     this.addKeysEvents();
 
     this.camera.position.z = 500;
-    this.camera.rotation.x -0.3;
     this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
     // this.addLightSphere();
 

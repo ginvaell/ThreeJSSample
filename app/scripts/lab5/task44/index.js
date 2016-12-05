@@ -6,7 +6,6 @@ export default class {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.zoom = 2;
-    // this.camera = new THREE.OrthographicCamera( this.width / - this.zoom, this.width / this.zoom, this.height / this.zoom, this.height / - this.zoom, 1, 1000 );
     this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 5000);
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -19,7 +18,7 @@ export default class {
 
     this.clock = new THREE.Clock();
 
-    this.loadTexture('/images/sp.jpg', texture => this.addCylinder(texture));
+    this.loadTexture('/images/metal.jpg', texture => this.addCylinder(texture));
 
 
     this.lights = [new THREE.DirectionalLight(0xffffff, 3), new THREE.PointLight(0x00ff00, 5)];
@@ -31,13 +30,12 @@ export default class {
     this.lightIndex = 0;
 
     this.camera.position.z = 500;
-    this.camera.rotation.x - 0.3;
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
     var ambientLight = new THREE.AmbientLight(0xffffff); // soft white light
     this.scene.add(ambientLight);
     this.helper = new THREE.DirectionalLightHelper(this.lights[0], 1);
-    this.scene.add(this.helper);
+    // this.scene.add(this.helper);
 
     this.cameraHelper = new THREE.CameraHelper(this.lights[0].shadow.camera);
 
@@ -82,13 +80,9 @@ export default class {
   }
 
   addParticleSystem(texture) {
-    this.count = 300;
+    this.count = 1000;
     let a = 5;
     let geometry = new THREE.SphereGeometry(a, 20, 20);
-    let material = new THREE.MeshPhongMaterial({
-      // map: texture,
-      color: 0xffffff
-    });
 
     this.particles = [];
 
@@ -116,22 +110,6 @@ export default class {
     this.helper.update();
     this.renderer.render(this.scene, this.camera);
     this.update();
-  };
-
-  rotateAroundObjectAxis(object, axis, radians) {
-    let rotationMatrix = new THREE.Matrix4();
-    rotationMatrix.makeRotationAxis(axis.normalize(), radians);
-    object.matrix.multiply(rotationMatrix);                       // post-multiply
-    object.rotation.setFromRotationMatrix(object.matrix, object.order);
-  }
-
-  rotateAroundWorldAxis(object, axis, radians) {
-
-    var q = new THREE.Quaternion(); // create once and reuse
-
-    q.setFromAxisAngle(axis, radians); // axis must be normalized, angle in radians
-    object.quaternion.premultiply(q);
-
   };
 
   update() {

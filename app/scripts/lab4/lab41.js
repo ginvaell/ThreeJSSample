@@ -44,7 +44,7 @@ export default class {
     var ambientLight = new THREE.AmbientLight( 0xffffff ); // soft white light
     this.scene.add( ambientLight );
     this.helper = new THREE.DirectionalLightHelper(this.lights[0], 1);
-    this.scene.add(this.helper);
+    // this.scene.add(this.helper);
 
     this.cameraHelper = new THREE.CameraHelper( this.lights[0].shadow.camera );
     // this.scene.add(this.cameraHelper);
@@ -137,7 +137,6 @@ export default class {
     let r = this.a - this.smallA;
     let velocity = 1;
     this.angle += velocity * moveDistance;
-    console.log(this.angle);
     this.torus.position.x = r * Math.cos(this.angle);
     this.torus.position.z = r * Math.sin(this.angle);
     this.torus.rotation.z = this.angle;

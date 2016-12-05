@@ -25,7 +25,7 @@ export default class {
 
 
 
-    this.lights = [new THREE.DirectionalLight( 0xff0000, 3 ), new THREE.PointLight( 0x00ff00, 5 )];
+    this.lights = [new THREE.DirectionalLight( 0x0000ff, 3 ), new THREE.PointLight( 0x00ff00, 5 )];
 
     this.lights[0].position.set( 100, 100, 100 );
 
@@ -44,7 +44,7 @@ export default class {
     var ambientLight = new THREE.AmbientLight( 0xffffff ); // soft white light
     this.scene.add( ambientLight );
     this.helper = new THREE.DirectionalLightHelper(this.lights[0], 1);
-    this.scene.add(this.helper);
+    // this.scene.add(this.helper);
 
     this.cameraHelper = new THREE.CameraHelper( this.lights[0].shadow.camera );
     // this.scene.add(this.cameraHelper);
@@ -64,7 +64,7 @@ export default class {
     );
 
     this.line = new THREE.Line( geometry, material );
-    this.scene.add( this.line );
+    // this.scene.add( this.line );
 
   }
 
@@ -175,19 +175,18 @@ export default class {
 
   update() {
     var moveDistance = this.clock.getDelta();
-    let r = 0;
+    let r = this.a /2 * Math.cos(Math.atan(1/2));
     let velocity = 1;
     this.angle += velocity * moveDistance;
 
-    this.torus.position.x = (r + this.a /2 * Math.cos(Math.atan(1/2))) * Math.cos(this.angle);
-    this.torus.position.z = (r + this.a /2 * Math.cos(Math.atan(1/2))) * Math.sin(this.angle);
+    this.torus.position.x = r * Math.cos(this.angle);
+    this.torus.position.z = r * Math.sin(this.angle);
     this.torus.position.y = (this.a/2) * Math.sin(this.xAngle) / 2;
 
-    let center = new THREE.Vector3(this.torus.position.x, this.torus.position.y, this.torus.position.z).normalize();
-    let centerPerp = new THREE.Vector3(0, this.torus.position.z, -this.torus.position.y).normalize();
     this.torus.lookAt(new THREE.Vector3(0, 0, 0));
     this.torus.rotateX(Math.PI / 2);
 
+    let center = new THREE.Vector3(this.torus.position.x, this.torus.position.y, this.torus.position.z).normalize();
     this.rotateAroundWorldAxis(this.torus, center, this.angle);
     this.line.geometry.vertices[1] = new THREE.Vector3(center.x*100, center.y*100, center.z*100);
     this.line.geometry.verticesNeedUpdate = true;

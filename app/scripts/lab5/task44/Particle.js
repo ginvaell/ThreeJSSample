@@ -11,11 +11,8 @@ export default class Particle {
     this.mesh = new THREE.Mesh(geometry, material);
     this.scene = scene;
     scene.add(this.mesh);
-    this.velocity = 50;
-
 
     this.raycaster = new THREE.Raycaster();
-
 
     var geometry = new THREE.Geometry();
     geometry.vertices.push(
@@ -25,8 +22,6 @@ export default class Particle {
 
     this.line = new THREE.Line( geometry, material );
     // this.scene.add( this.line );
-
-
     this.init();
   }
 
@@ -81,11 +76,9 @@ export default class Particle {
     if (distance < 10) {
       this.mesh.position.copy(this.point);
       return;
-    };
+    }
 
     this.aForce = 4000000 / (distance * distance);
-
-
 
     this.v.x += this.a.x * this.aForce * clock;
     this.v.y += this.a.y * this.aForce * clock;
@@ -112,6 +105,5 @@ export default class Particle {
     let helpLineLength = this.aForce;
     this.line.geometry.vertices[1] = new THREE.Vector3(this.mesh.position.x + this.a.x * helpLineLength, this.mesh.position.y + this.a.y * helpLineLength, this.mesh.position.z + this.a.z * helpLineLength);
     this.line.geometry.verticesNeedUpdate = true;
-
   }
 }
